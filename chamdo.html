@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sistema de Chamados - IDEAU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --azul: #0d6d00;
+      --azul-escuro: #0a5500;
+      --azul-claro: #28a745;
+      --amarelo: #F7B500;
+      --cinza-bg: #F4F5F7;
+      --branco: #ffffff;
+      --texto: #333333;
+      --cinza-claro: #e9ecef;
+      --sombra: rgba(0, 0, 0, 0.15);
+      --rosa: #5ac727;
+      --roxo: #146d27;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Inter', Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, var(--cinza-bg) 0%, #e0e0e0 50%, var(--azul-claro) 100%);
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: linear-gradient(135deg, var(--azul) 0%, var(--azul-escuro) 50%, var(--roxo) 100%);
+      color: var(--branco);
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 6px 25px var(--sombra);
+    }
+    header img {
+      height: 100px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 4px 8px var(--sombra));
+    }
+    h1 {
+      font-size: 32px;
+      margin: 0;
+      font-weight: 700;
+    }
+    main {
+      max-width: 1000px;
+      margin: 50px auto;
+      background: var(--branco);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px var(--sombra);
+      flex: 1;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+    form > div {
+      display: flex;
+      flex-direction: column;
+    }
+    form > div:nth-child(3), form > div:nth-child(4) {
+      grid-column: span 2;
+    }
+    label {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: var(--azul);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    input, textarea {
+      padding: 15px;
+      border: 2px solid var(--cinza-claro);
+      border-radius: 12px;
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background: var(--branco);
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--amarelo);
+      box-shadow: 0 0 10px rgba(247, 181, 0, 0.3);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    button {
+      background: var(--azul);
+      color: var(--branco);
+      border: none;
+      border-radius: 12px;
+      padding: 15px 25px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 18px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      grid-column: span 2;
+      justify-self: center;
+      width: 250px;
+    }
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px var(--sombra);
+    }
+    hr {
+      margin: 40px 0;
+      border: none;
+      border-top: 3px solid var(--amarelo);
+      border-radius: 2px;
+    }
+    h2 {
+      font-size: 28px;
+      color: var(--azul);
+      margin-bottom: 25px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .chamado {
+      background: var(--branco);
+      padding: 25px;
+      border-radius: 15px;
+      border: 1px solid var(--cinza-claro);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      box-shadow: 0 4px 15px var(--sombra);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .chamado::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--azul), var(--amarelo));
+      border-radius: 15px 0 0 15px;
+    }
+    .chamado:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px var(--sombra);
+    }
+    .chamado.feito {
+      background: var(--cinza-claro);
+      opacity: 0.8;
+      text-decoration: line-through;
+    }
+    .chamado strong {
+      color: var(--azul);
+      font-size: 20px;
+    }
+    .chamado small {
+      color: #666;
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .chamado p {
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    .chamado button {
+      background: #dc3545;
+      color: var(--branco);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 15px;
+      transition: transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .chamado button:hover {
+      transform: scale(1.05);
+    }
+    .vazio {
+      text-align: center;
+      color: #888;
+      padding: 60px;
+      font-size: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+    .vazio i {
+      font-size: 64px;
+      color: var(--cinza-claro);
+    }
+
+    /* Notificação */
+    .notificacao {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--azul);
+      color: var(--branco);
+      padding: 25px 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px var(--sombra);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+      z-index: 1000;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .notificacao.mostrar {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.3);
+      margin-top: 6px;
+      cursor: pointer;
+      accent-color: var(--amarelo);
+    }
+
+    @media (max-width: 768px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      form > div:nth-child(3), form > div:nth-child(4) {
+        grid-column: span 1;
+      }
+      button {
+        width: 100%;
+      }
+      .chamado {
+        flex-direction: column;
+        gap: 15px;
+      }
+      header {
+        padding: 30px 15px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      main {
+        margin: 30px 15px;
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="IDEAU.png" alt="Logo IDEAU">
+    <h1><i class="fas fa-ticket-alt"></i> Sistema de Chamados - IDEAU</h1>
+  </header>
+
+  <main>
+    <form id="formChamado">
+      <div>
+        <label><i class="fas fa-user"></i> Nome</label>
+        <input type="text" id="nome" placeholder="Digite seu nome" required>
+      </div>
+      <div>
+        <label><i class="fas fa-envelope"></i> E-mail</label>
+        <input type="email" id="email" placeholder="Digite seu e-mail">
+      </div>
+      <div>
+        <label><i class="fas fa-tag"></i> Assunto</label>
+        <input type="text" id="assunto" placeholder="Breve resumo" required>
+      </div>
+      <div>
+        <label><i class="fas fa-comment"></i> Descrição</label>
+        <textarea id="descricao" placeholder="Descreva sua solicitação" required></textarea>
+      </div>
+      <button type="submit"><i class="fas fa-paper-plane"></i> Enviar chamado</button>
+    </form>
+
+    <hr>
+
+    <h2><i class="fas fa-list"></i> Chamados enviados</h2>
+    <div id="listaChamados"></div>
+  </main>
+
+  <div id="notificacao" class="notificacao">
+    <i class="fas fa-check-circle"></i> Muito obrigado por deixar sua solicitação! Em breve entraremos em contato.
+  </div>
+
+  <script>
+    const form = document.getElementById('formChamado');
+    const lista = document.getElementById('listaChamados');
+    const notificacao = document.getElementById('notificacao');
+    const CHAVES = 'chamados_ideau';
+    let chamados = JSON.parse(localStorage.getItem(CHAVES) || '[]');
+
+    const salvar = () => localStorage.setItem(CHAVES, JSON.stringify(chamados));
+
+    const mostrarNotificacao = () => {
+      notificacao.classList.add('mostrar');
+      setTimeout(() => notificacao.classList.remove('mostrar'), 4000);
+    };
+
+    const render = () => {
+      lista.innerHTML = '';
+      if (chamados.length === 0) {
+        lista.innerHTML = '<div class="vazio"><i class="fas fa-inbox"></i><br>Nenhum chamado aberto</div>';
+        return;
+      }
+      chamados.forEach((c, i) => {
+        const div = document.createElement('div');
+        div.className = 'chamado' + (c.feito ? ' feito' : '');
+        div.innerHTML = `
+          <input type="checkbox" ${c.feito ? 'checked' : ''} onchange="toggleFeito(${i})">
+          <div>
+            <strong>${c.assunto}</strong><br>
+            <small><i class="fas fa-user"></i> ${c.nome} — <i class="fas fa-envelope"></i> ${c.email || 'sem e-mail'}</small><br>
+            <p>${c.descricao}</p>
+            <button onclick="excluir(${i})"><i class="fas fa-trash"></i> Excluir</button>
+          </div>
+        `;
+        lista.appendChild(div);
+      });
+    };
+
+    const excluir = (i) => {
+      if (confirm('Excluir este chamado?')) {
+        chamados.splice(i, 1);
+        salvar();
+        render();
+      }
+    };
+
+    const toggleFeito = (i) => {
+      chamados[i].feito = !chamados[i].feito;
+      salvar();
+      render();
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const novo = {
+        nome: form.nome.value,
+        email: form.email.value,
+        assunto: form.assunto.value,
+        descricao: form.descricao.value,
+        feito: false,
+        data: new Date().toLocaleString()
+      };
+      chamados.unshift(novo);
+      salvar();
+      form.reset();
+      render();
+      mostrarNotificacao();
+    });
+
+    render();
+  </script>
+</body>
+</html>
